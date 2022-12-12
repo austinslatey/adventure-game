@@ -14,6 +14,8 @@ function create() {
     // Change behavior of image centering
     gameState.background.setOrigin(0,0);
     renderCharacter(this, 'knight')
+    const firstPage = fetchPage(1);
+    displayPage(this, firstPage);
   }
 
   function renderCharacter(scene, key) 
@@ -35,7 +37,7 @@ function create() {
 function initializePage(scene) {
   // create options list and background
   // and saves them into gameState
-
+ 
 
   if (!gameState.options) {
     // create options list
@@ -71,6 +73,8 @@ function displayPage(scene, page) {
   
   // display general page character
   // & narrative here:
+  // renderCharacter(scene, page.character);
+
   gameState.narrative = scene.add.text(65, 380, page.narrative, narrativeStyle);
 
   // for-loop creates different options
@@ -97,7 +101,14 @@ function displayPage(scene, page) {
 
     // add in gameplay functionality
     // for options here
-
+    option.setInteractive();
+    optionBox.on('pointerup',
+    function() {
+      const newPage = this.option.nextPage;
+      if (newPage !== undefined) {
+        destroyPage();
+      }
+    })
 
   }
 }
