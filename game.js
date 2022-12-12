@@ -73,7 +73,7 @@ function displayPage(scene, page) {
   
   // display general page character
   // & narrative here:
-  // renderCharacter(scene, page.character);
+  renderCharacter(scene, page.character);
 
   gameState.narrative = scene.add.text(65, 380, page.narrative, narrativeStyle);
 
@@ -101,14 +101,31 @@ function displayPage(scene, page) {
 
     // add in gameplay functionality
     // for options here
-    option.setInteractive();
+    optionBox.setInteractive();
     optionBox.on('pointerup',
     function() {
       const newPage = this.option.nextPage;
       if (newPage !== undefined) {
         destroyPage();
+        displayPage(scene, fetchPage(newPage));
       }
-    })
+    }, { option });
+
+    optionBox.on('pointerover', function() {
+      this.optionBox.setStrokeStyle(2, 0xffe014, 1);
+      this.optionText.setColor('#ffe014')
+    }, { optionBox, optionText });
+
+    optionBox.on('pointerout', 
+    function() {
+      this.optionBox.setStrokeStyle(1, 0xb38c03, 1);
+      this.optionText.setColor('#b39c0e')
+    }, { optionBox, optionText });
+
+    gameState.options.push({
+      optionBox,
+      optionText
+    });
 
   }
 }
@@ -132,7 +149,7 @@ function fetchPage(page) {
 
    const pages = [
      {
-      character: 'orc',
+      character: 'knight',
       page: 1,
       narrative: 'Orc: Hello?',
       options: [
@@ -142,7 +159,7 @@ function fetchPage(page) {
     },
 
     {
-      character: 'orc',
+      character: 'wizard',
       page: 41,
       narrative: 'Orc: Uhm. Excuse me?!',
       options: [
